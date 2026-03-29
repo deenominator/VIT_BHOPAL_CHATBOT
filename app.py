@@ -187,7 +187,7 @@ if st.session_state.membership is True and not st.session_state.student_intro_do
 
             # Personalized intro
             if name:
-                intro = f"Hi {name}! 👋 Great to have someone from the **{branch} Branch**!"
+                intro = f"Hi {name}! 👋 Great to have someone from the **{student_branch} Branch**!"
             else:
                 intro = "Welcome Student! 👋 How can I assist you today?"
 
