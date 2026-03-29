@@ -1,3 +1,4 @@
+import os
 import faiss
 import numpy as np
 import pickle
@@ -13,6 +14,13 @@ class Retriever:
         # Load model
         self.model = SentenceTransformer(model_name)
 
+        # Auto-build index if files are missing (e.g. on Streamlit Cloud)
+        if not os.path.exists(INDEX_FILE) or not os.path.exists(CHUNKS_FILE):
+            print("⚠️ Index files not found. Building index from VIT_data.txt...")
+            from build_index import build
+            build()
+            print("✅ Index built successfully.")
+
         # Load FAISS index
         print("🔹 Loading FAISS index...")
         self.index = faiss.read_index(INDEX_FILE)
@@ -22,13 +30,9 @@ class Retriever:
         with open(CHUNKS_FILE, "rb") as f:
             self.chunks = pickle.load(f)
 
-        print(f"Retriever ready — {len(self.chunks)} chunks loaded.")
+        print(f"✅ Retriever ready — {len(self.chunks)} chunks loaded.")
 
     def retrieve(self, query):
-        """
-        Embeds a user query, performs FAISS search, 
-        and returns the most relevant text chunks.
-        """
         query_vec = self.model.encode([query], convert_to_numpy=True)
         distances, indices = self.index.search(query_vec, self.top_k)
 
