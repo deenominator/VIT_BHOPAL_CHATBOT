@@ -5,7 +5,7 @@ import re
 from sentence_transformers import SentenceTransformer
 
 # --- CONFIGURATION ---
-DATA_FILE = "club_data.txt"
+DATA_FILE = "VIT_data.txt"
 INDEX_FILE = "faiss_index.bin"
 CHUNKS_FILE = "chunks.pkl"
 EMBEDDINGS_FILE = "embeddings.npy"
